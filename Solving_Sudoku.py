@@ -19,32 +19,34 @@ class Solving_sudoku:
             self.empty_sudoku[i[0]][i[1]] = i[2]
         return self.empty_sudoku
 
-    def available_numbers(self, row_num: int, colum_num: int) -> set:
+    def available_numbers(self, row_index: int, colum_index: int) -> set:
         ''' function for checking columns, rows and individual squares '''
         full_set_numbers = {1,2,3,4,5,6,7,8,9}
         possible_numbers = set()
-        for i in self.empty_sudoku[row_num]:
-            if i != 0:
-                possible_numbers.add(i)
-        for colum_check in self.empty_sudoku:
-            if colum_check[colum_num] != 0:
-                possible_numbers.add(colum_check[colum_num])
+
+        for row_num in self.empty_sudoku[row_index]:
+            if row_num != 0:
+                possible_numbers.add(row_num)
+
+        for colum_num in self.empty_sudoku:
+            if colum_num[colum_index] != 0:
+                possible_numbers.add(colum_num[colum_index])
 
         start_colum, end_colum = 0, 0
         start_row, end_row = 0, 0
 
-        if colum_num < 3:
+        if colum_index < 3:
             start_colum, end_colum = 0 , 3
-        elif colum_num >= 3 and colum_num < 6:
+        elif colum_index >= 3 and colum_index < 6:
             start_colum, end_colum = 3 , 6
-        elif colum_num >= 6:
+        elif colum_index >= 6:
             start_colum, end_colum = 6 , 9
 
-        if row_num < 3:
+        if row_index < 3:
             start_row, end_row = 0 , 3
-        elif row_num >= 3 and row_num < 6:
+        elif row_index >= 3 and row_index < 6:
             start_row, end_row = 3 , 6
-        elif row_num >= 6:
+        elif row_index >= 6:
             start_row, end_row = 6 , 9
 
         for index in range(start_row, end_row):
