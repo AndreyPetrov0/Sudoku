@@ -1,5 +1,6 @@
 import pygame as pg
-
+import sys, os
+from pygame.locals import *
 
 s = {}
 rs = {}
@@ -14,10 +15,9 @@ default_font = pg.font.get_default_font()
 
 
 ## Screen block
-scr_width = pg.display.Info().current_w
-scr_height = pg.display.Info().current_h
-screen = pg.display.set_mode((scr_width, scr_height))
-screen.fill("dark blue")
+display_size = pg.display.Info().current_w, pg.display.Info().current_h
+screen = pg.display.set_mode(display_size, FULLSCREEN)
+scr_width, scr_height = pg.display.get_surface().get_size()
 
 a_fingers = 0
 
