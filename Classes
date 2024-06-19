@@ -17,7 +17,14 @@ class Tile:
 	@classmethod
 	def create_tile(cls, row: int, column: int):
 		tile_coordinates = row, column
-		return cls(0, tile_coordinates)
+		number = None
+		
+		try:
+			number = s[tile_coordinates].current_number
+		except:
+			number = 0
+		
+		return cls(number, tile_coordinates)
 	
 	
 	def set_number(self, number):
