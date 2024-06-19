@@ -14,8 +14,8 @@ default_font = pg.font.get_default_font()
 
 
 ## Screen block
-scr_width = 720
-scr_height = 1600
+scr_width = pg.display.Info().current_w
+scr_height = pg.display.Info().current_h
 screen = pg.display.set_mode((scr_width, scr_height))
 screen.fill("dark blue")
 
@@ -23,7 +23,7 @@ a_fingers = 0
 
 
 ## Sudoku size block
-board_size = 600
+board_size = 1000
 board_start = (scr_width - board_size) // 2
 wide_line = 10
 narrow_line = 5
