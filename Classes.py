@@ -6,6 +6,7 @@ from Settings import *
 class Tile:
 	def __init__(self, number: int, coordinates: tuple):
 		self.__coordinates = coordinates
+		self.current_color = number_is_default.value
 		
 		x = get_x(coordinates[1])
 		y = get_y(coordinates[0])
@@ -29,8 +30,8 @@ class Tile:
 	
 	def set_number(self, number):
 		row, column = self.__coordinates
-		
-		font_str = button_font.render(str(number), 0, "black")
+		font_color = ["red", "black"][self.current_color]
+		font_str = button_font.render(str(number), 0, font_color)
 		fw = button_font.metrics(str(number))
 		fx = get_x(column) + tile_size // 2 - fw[0][-1] // 2
 		fy = get_y(row) + tile_size // 2 - button_font_height // 1.5
@@ -50,7 +51,7 @@ class Tile:
 		
 		
 	@current_number.setter
-	def current_number(self, new_number: int):
+	def current_number(self, new_number):
 		self._current_number = new_number
 		self.erase_tile()
 		self.set_number(new_number)
@@ -126,3 +127,5 @@ class Global:
 	@value.setter
 	def value(self, new_value):
 		self._value = new_value
+
+number_is_default = Global(True)
