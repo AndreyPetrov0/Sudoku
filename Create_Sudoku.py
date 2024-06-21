@@ -26,8 +26,8 @@ class Create_sudoku:
             sudoku.append(row)
         return sudoku
 
-
-W = Create_sudoku().create()
-print(*W, sep='\n')
-S = Validate_sudoku(W)
-print(S.is_valid())
+if __name__ == '__main__':
+    W = Create_sudoku().create()
+    print(*W, sep='\n')
+    S = Validate_sudoku(W)
+    print(S.is_valid())
