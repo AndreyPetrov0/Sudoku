@@ -26,9 +26,13 @@ pg.draw.rect(board_surf, "black", board_rect)
 chosen_number = 0
 first_touch = Global(True)
 
+hide_android_keyboard()
+
 
 while running:
 		for event in pg.event.get():
+			#open("error.txt", "a").write(str(event.type) + ";")
+			
 			if event.type == 32785:  # WINDOWFOCUSGAINED
 				buttons = []
 				screen.fill("dark blue")
@@ -36,6 +40,11 @@ while running:
 			
 				for i in range(81):
 					row, column = i // 9, i % 9
+					try:
+						tile = s[(row, column)]
+						number_is_default.value = tile.current_color
+					except:
+						pass
 					s[(row, column)] = Tile.create_tile(row, column)
 
 				for i in range(10):
@@ -60,6 +69,7 @@ while running:
 				
 				for k, v in rs.items():
 					if v.collidepoint((tx, ty)):
+						s[k].current_color = True
 						s[k].current_number = chosen_number
 						row, column = k
 						empty_board[row][column] = chosen_number
