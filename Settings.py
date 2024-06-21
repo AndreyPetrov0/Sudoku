@@ -2,6 +2,7 @@ import pygame as pg
 import sys, os
 from pygame.locals import *
 
+
 s = {}
 rs = {}
 d = {}
@@ -23,7 +24,7 @@ a_fingers = 0
 
 
 ## Sudoku size block
-board_size = 1000
+board_size = 600
 board_start = (scr_width - board_size) // 2
 wide_line = 10
 narrow_line = 5
