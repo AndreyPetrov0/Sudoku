@@ -7,6 +7,7 @@ class Tile:
 	def __init__(self, number: int, coordinates: tuple):
 		self.__coordinates = coordinates
 		self.current_color = number_is_default.value
+		self.locked = False
 		
 		x = get_x(coordinates[1])
 		y = get_y(coordinates[0])
