@@ -34,7 +34,7 @@ def set_new_sudoku(collection, sudoku):
 		for j in range(len(sudoku[i])):
 			number = sudoku[i][j]
 			tile = collection.get((i, j))
-			tile.current_color =  tile.current_number > 0
+			tile.current_color =  tile.locked
 			tile.current_number = number
 
 
