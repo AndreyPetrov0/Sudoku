@@ -167,9 +167,7 @@ class Solving_sudoku:
 
                                     if step_level_3 == 0:
                                         stop_checking = False
-                                        if len(ava_num) == 0:
-                                            stop_checking = True
-
+                                        
                                         if len(ava_num) == 1:
                                             self.empty_sudoku[index_row][index_number] = list(ava_num)[0]
                                             count_zero -= 1
@@ -198,7 +196,8 @@ class Solving_sudoku:
                                                     stop_checking = True
 
                                         if stop_checking == False:
-                                            for number in ava_num:
+                                            ava_n: set = self.available_numbers(index_row, index_number) - double_squares
+                                            for number in ava_n:
                                                 Count_squares[number] += 1
 
                                     elif step_level_3 == 1:
