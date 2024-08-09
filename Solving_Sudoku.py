@@ -1,6 +1,5 @@
 from Validate_Sudoku import *
 
-
 class Solving_sudoku:
     empty_sudoku = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -11,7 +10,7 @@ class Solving_sudoku:
                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 0, 0, 0, 0, 0]]
-    
+
     def __init__(self, *cord_num):
         self.cord_num = cord_num
 
@@ -73,10 +72,10 @@ class Solving_sudoku:
     def count_ava_num_in_row(self, row_index: int) -> dict:
         ''' function to count the available numbers in a row '''
         ava_row_num = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
-        for ind in range(9):
-            if self.empty_sudoku[row_index][ind] == 0:
-                ava_num_in_point: set = self.available_numbers(row_index, ind)
-                number_appented_twice_in_square: set = self.number_appented_twice_in_square(row_index, ind)
+        for index_colum in range(9):
+            if self.empty_sudoku[row_index][index_colum] == 0:
+                ava_num_in_point: set = self.available_numbers(row_index, index_colum)
+                number_appented_twice_in_square: set = self.number_appented_twice_in_square(row_index, index_colum)
                 if list(number_appented_twice_in_square)[0] in ava_num_in_point:
                     ava_num_in_point = ava_num_in_point & number_appented_twice_in_square
 
@@ -86,6 +85,13 @@ class Solving_sudoku:
                     if ls_nm_row[0] in ava_num_in_point and ls_nm_row[1] in ava_num_in_point:
                         ava_num_in_point = ava_num_in_point & number_appented_twice_in_row
 
+                number_appented_first_in_colum: dict = self.number_appented_first_in_colum(index_colum)
+                if len(number_appented_first_in_colum) != 0:
+                    for n_c in ava_num_in_point:
+                        if n_c in number_appented_first_in_colum:
+                            if [row_index, index_colum] != number_appented_first_in_colum[n_c][0] and [row_index,index_colum] != number_appented_first_in_colum[n_c][1]:
+                                ava_num_in_point = ava_num_in_point - {n_c}
+
                 for number in ava_num_in_point:
                     ava_row_num[number] += 1
         return ava_row_num
@@ -94,10 +100,10 @@ class Solving_sudoku:
     def count_ava_num_in_colum(self, colum_index: int) -> dict:
         ''' function to count the available numbers in a colum '''
         ava_colum_num = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
-        for ind in range(9):
-            if self.empty_sudoku[ind][colum_index] == 0:
-                ava_num_in_point: set = self.available_numbers(ind, colum_index)
-                number_appented_twice_in_square: set = self.number_appented_twice_in_square(ind, colum_index)
+        for index_row in range(9):
+            if self.empty_sudoku[index_row][colum_index] == 0:
+                ava_num_in_point: set = self.available_numbers(index_row, colum_index)
+                number_appented_twice_in_square: set = self.number_appented_twice_in_square(index_row, colum_index)
                 if list(number_appented_twice_in_square)[0] in ava_num_in_point:
                     ava_num_in_point = ava_num_in_point & number_appented_twice_in_square
 
@@ -106,6 +112,13 @@ class Solving_sudoku:
                 if len(ls_nm_co) != 0:
                     if ls_nm_co[0] in ava_num_in_point and ls_nm_co[1] in ava_num_in_point:
                         ava_num_in_point = ava_num_in_point & number_appented_twice_in_colum
+
+                number_appented_first_in_row: dict = self.number_appented_first_in_row(index_row)
+                if len(number_appented_first_in_row) != 0:
+                    for a_r in ava_num_in_point:
+                        if a_r in number_appented_first_in_row:
+                            if [index_row, colum_index] != number_appented_first_in_row[a_r][0] and [index_row,colum_index] != number_appented_first_in_row[a_r][1]:
+                                ava_num_in_point = ava_num_in_point - {a_r}
 
                 for number in ava_num_in_point:
                     ava_colum_num[number] += 1
@@ -205,6 +218,7 @@ class Solving_sudoku:
             return double_num[0]
         else:
             return {0}
+
 
     def number_appented_twice_in_colum(self, colum_index: int) -> set:
         ''' the function finds numbers that occur twice in colum '''
@@ -352,7 +366,7 @@ class Solving_sudoku:
         ''' function for solving sudoku (completes the sudoku puzzle only once) '''
         count_zero = 81 - len(self.cord_num)
         stop_iter = 0
-        while count_zero > 0 and stop_iter < 8:
+        while count_zero > 0 and stop_iter < 9:
             print(f'{stop_iter} count iter')
             start_row , end_row = 0 , 3
             
@@ -365,20 +379,26 @@ class Solving_sudoku:
                     for step_level_3 in range(2):
 
                         for index_row in range(start_row, end_row):
-                            for index_number in range(start_colum, end_colum):
-                                if self.empty_sudoku[index_row][index_number] == 0:
+                            for index_colum in range(start_colum, end_colum):
+                                if self.empty_sudoku[index_row][index_colum] == 0:
                                     double_bets_in_row: set = self.double_bets_in_row(index_row)
-                                    double_bets_in_colum: set = self.double_bets_in_colum(index_number)
-                                    double_bets_in_squares: set = self.double_bets_in_squares(index_row, index_number)
-                                    ava_num_in_point: set = self.available_numbers(index_row, index_number) - double_bets_in_row - double_bets_in_colum - double_bets_in_squares
-                                    number_appented_twice_in_square = self.number_appented_twice_in_square(index_row, index_number)
+                                    double_bets_in_colum: set = self.double_bets_in_colum(index_colum)
+                                    double_bets_in_squares: set = self.double_bets_in_squares(index_row, index_colum)
+                                    ava_num_in_point: set = self.available_numbers(index_row, index_colum) - double_bets_in_row - double_bets_in_colum - double_bets_in_squares
+                                    # Обищие проверки для всех стеков.
+                                    number_appented_twice_in_square = self.number_appented_twice_in_square(index_row, index_colum)
+                                    number_appented_first_in_row: dict = self.number_appented_first_in_row(index_row)
+                                    number_appented_first_in_colum: dict = self.number_appented_first_in_colum(index_colum)
+                                    if step_level_3 != 1:
+                                        number_appented_twice_in_row: set = self.number_appented_twice_in_row(index_row)
+                                        number_appented_twice_in_colum: set = self.number_appented_twice_in_colum(index_colum)
 
                                     if step_level_3 == 0:
                                         stop_checking = False
 
                                         if len(ava_num_in_point) == 1:
                                             # ************ POINT STEK ***************
-                                            self.empty_sudoku[index_row][index_number] = list(ava_num_in_point)[0]
+                                            self.empty_sudoku[index_row][index_colum] = list(ava_num_in_point)[0]
                                             count_zero -= 1
                                             stop_checking = True
                                             # print(*self.empty_sudoku, sep='\n')
@@ -389,17 +409,24 @@ class Solving_sudoku:
                                         if stop_checking == False:
                                             # ************ ROW STEK ***************
                                             count_row_num: dict = self.count_ava_num_in_row(index_row)
-                                            point_in_row: set = self.available_numbers(index_row, index_number)
+                                            point_in_row: set = self.available_numbers(index_row, index_colum)
                                             # ***************************
 
                                             if tuple(number_appented_twice_in_square)[0] in point_in_row:
                                                 point_in_row = point_in_row & number_appented_twice_in_square
 
-                                            number_appented_twice_in_row = self.number_appented_twice_in_row(index_row)
+                                            row_1 = number_appented_twice_in_row
                                             ls_nm_row = list(number_appented_twice_in_row)
                                             if len(ls_nm_row) != 0:
                                                 if ls_nm_row[0] in point_in_row and ls_nm_row[1] in point_in_row:
                                                     point_in_row = point_in_row & number_appented_twice_in_row
+
+                                            colum_1 = number_appented_first_in_colum
+                                            if len(number_appented_first_in_colum) != 0:
+                                                for n_c in point_in_row:
+                                                    if n_c in number_appented_first_in_colum:
+                                                        if [index_row, index_colum] != number_appented_first_in_colum[n_c][0] and [index_row, index_colum] != number_appented_first_in_colum[n_c][1]:
+                                                            point_in_row = point_in_row - {n_c}
 
                                             if len(double_bets_in_row) == 2:
                                                 count_row_num.pop(list(double_bets_in_row)[0])
@@ -407,28 +434,35 @@ class Solving_sudoku:
 
                                             for number_row, count_num_row in count_row_num.items():
                                                 if count_num_row == 1 and number_row in point_in_row:
-                                                    self.empty_sudoku[index_row][index_number] = number_row
+                                                    self.empty_sudoku[index_row][index_colum] = number_row
                                                     count_zero -= 1
                                                     stop_checking = True
                                                     # print(*self.empty_sudoku, sep='\n')
                                                     # print(f'row - {index_row}')
-                                                    # print(f'colum - {index_number}')
+                                                    # print(f'colum - {index_colum}')
                                                     # print(f'count_row_num==1 - {number_row}')
                                         #-----------------------------------------------------------------------------------------
                                         if stop_checking == False:
                                             # ************* COLUM STEK **************
-                                            count_colum_num: dict = self.count_ava_num_in_colum(index_number)
-                                            point_in_col: set = self.available_numbers(index_row, index_number)
+                                            count_colum_num: dict = self.count_ava_num_in_colum(index_colum)
+                                            point_in_col: set = self.available_numbers(index_row, index_colum)
                                             # ***************************
 
                                             if tuple(number_appented_twice_in_square)[0] in point_in_col:
                                                 point_in_col = point_in_col & number_appented_twice_in_square
 
-                                            number_appented_twice_in_colum: set = self.number_appented_twice_in_colum(index_number)
+                                            colum_2 = number_appented_twice_in_colum
                                             ls_nm_co = list(number_appented_twice_in_colum)
                                             if len(ls_nm_co) != 0:
                                                 if ls_nm_co[0] in point_in_col and ls_nm_co[1] in point_in_col:
                                                     point_in_col = ava_num_in_point & number_appented_twice_in_colum
+
+                                            row_2 = number_appented_first_in_row
+                                            if len(number_appented_first_in_row) != 0:
+                                                for a_r in point_in_col:
+                                                    if a_r in number_appented_first_in_row:
+                                                        if [index_row, index_colum] != number_appented_first_in_row[a_r][0] and [index_row, index_colum] != number_appented_first_in_row[a_r][1]:
+                                                            point_in_col = point_in_col - {a_r}
 
                                             if len(double_bets_in_colum) == 2:
                                                 count_colum_num.pop(list(double_bets_in_colum)[0])
@@ -436,17 +470,17 @@ class Solving_sudoku:
 
                                             for number_colum, count_num_colum in count_colum_num.items():
                                                 if count_num_colum == 1 and number_colum in point_in_col:
-                                                    self.empty_sudoku[index_row][index_number] = number_colum
+                                                    self.empty_sudoku[index_row][index_colum] = number_colum
                                                     count_zero -= 1
                                                     stop_checking = True
                                                     # print(*self.empty_sudoku, sep='\n')
                                                     # print(f'row - {index_row}')
-                                                    # print(f'colum - {index_number}')
+                                                    # print(f'colum - {index_colum}')
                                                     # print(f'count_colum_num==1 - {number_colum}')
                                         # -----------------------------------------------------------------------------------------
                                         if stop_checking == False:
                                             # ************ SQUARES STEK ***************
-                                            ava_num: set = self.available_numbers(index_row, index_number) - double_bets_in_squares
+                                            ava_num: set = self.available_numbers(index_row, index_colum) - double_bets_in_squares
                                             # ***************************
 
                                             if tuple(number_appented_twice_in_square)[0] in ava_num:
@@ -466,18 +500,18 @@ class Solving_sudoku:
                                                 elif ls_doub_bet_colum[0] in ava_num or ls_doub_bet_colum[1] in ava_num:
                                                     ava_num = ava_num - double_bets_in_colum
 
-                                            number_appented_first_in_colum: dict = self.number_appented_first_in_colum(index_number)
+                                            colum_3 = number_appented_first_in_colum
                                             if len(number_appented_first_in_colum) != 0:
                                                 for n_c in ava_num:
                                                     if n_c in number_appented_first_in_colum:
-                                                        if [index_row, index_number] != number_appented_first_in_colum[n_c][0] and [index_row, index_number] != number_appented_first_in_colum[n_c][1]:
+                                                        if [index_row, index_colum] != number_appented_first_in_colum[n_c][0] and [index_row, index_colum] != number_appented_first_in_colum[n_c][1]:
                                                             ava_num = ava_num - {n_c}
 
-                                            number_appented_first_in_row: dict = self.number_appented_first_in_row(index_row)
+                                            row_3 = number_appented_first_in_row
                                             if len(number_appented_first_in_row) != 0:
                                                 for a_r in ava_num:
                                                     if a_r in number_appented_first_in_row:
-                                                        if [index_row, index_number] != number_appented_first_in_row[a_r][0] and [index_row, index_number] != number_appented_first_in_row[a_r][1]:
+                                                        if [index_row, index_colum] != number_appented_first_in_row[a_r][0] and [index_row, index_colum] != number_appented_first_in_row[a_r][1]:
                                                             ava_num = ava_num - {a_r}
 
                                             for number in ava_num:
@@ -487,27 +521,27 @@ class Solving_sudoku:
                                         if tuple(number_appented_twice_in_square)[0] in ava_num_in_point:
                                             ava_num_in_point = ava_num_in_point & number_appented_twice_in_square
 
-                                        number_appented_first_in_colum: dict = self.number_appented_first_in_colum(index_number)
+                                        colum_4 = number_appented_first_in_colum
                                         if len(number_appented_first_in_colum) != 0:
                                             for n_c in ava_num_in_point:
                                                 if n_c in number_appented_first_in_colum:
-                                                    if [index_row, index_number] != number_appented_first_in_colum[n_c][0] and [index_row, index_number] != number_appented_first_in_colum[n_c][1]:
+                                                    if [index_row, index_colum] != number_appented_first_in_colum[n_c][0] and [index_row, index_colum] != number_appented_first_in_colum[n_c][1]:
                                                         ava_num_in_point = ava_num_in_point - {n_c}
 
-                                        number_appented_first_in_row: dict = self.number_appented_first_in_row(index_row)
+                                        row_4 = number_appented_first_in_row
                                         if len(number_appented_first_in_row) != 0:
                                             for n_r in ava_num_in_point:
                                                 if n_r in number_appented_first_in_row:
-                                                    if [index_row, index_number] != number_appented_first_in_row[n_r][0] and [index_row, index_number] != number_appented_first_in_row[n_r][1]:
+                                                    if [index_row, index_colum] != number_appented_first_in_row[n_r][0] and [index_row, index_colum] != number_appented_first_in_row[n_r][1]:
                                                         ava_num_in_point = ava_num_in_point - {n_r}
 
                                         for number in ava_num_in_point:
                                             if Count_squares[number] == 1:
-                                                self.empty_sudoku[index_row][index_number] = number
+                                                self.empty_sudoku[index_row][index_colum] = number
                                                 count_zero -= 1
                                                 # print(*self.empty_sudoku, sep='\n')
                                                 # print(f'row - {index_row}')
-                                                # print(f'colum - {index_number}')
+                                                # print(f'colum - {index_colum}')
                                                 # print(f'Count_squares==1 - {number}')
                     start_colum += 3
                     end_colum += 3
