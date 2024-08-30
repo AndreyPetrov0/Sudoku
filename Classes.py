@@ -1,13 +1,12 @@
 import pygame as pg
 from Functions import *
-from Settings import *
 
 
 class Tile:
 	def __init__(self, number: int, coordinates: tuple):
 		self.__coordinates = coordinates
-		self.current_color = number_is_default.value
-		self.locked = False
+		self.current_color = True # number_is_default.value
+		self.locked = True
 		
 		x = get_x(coordinates[1])
 		y = get_y(coordinates[0])
@@ -55,17 +54,20 @@ class Tile:
 	def current_number(self, new_number):
 		self._current_number = new_number
 		self.erase_tile()
-		self.set_number(new_number)
-		if not new_number:
-			self.erase_tile()
+		row, column = self.__coordinates
+		empty_board.value[row][column] = new_number
+		if new_number:
+			self.set_number(new_number)
 	
 
 class Dial(Tile):
-	def __init__(self, number: int, coordinates: tuple):
+	def __init__(self, number: int, coordinates: tuple, color: str):
 		self.__coordinates = coordinates
 		
+		self.current_color = color
+		
 		row, column = number // 5, number % 5
-		pg.draw.rect(dial_surf, "green", dial_rect)
+		pg.draw.rect(dial_surf, self.current_color, dial_rect)
 		x = board_start + wide_line * column + dial_size * column
 		y = dial_start + wide_line * row + dial_size * row
 		screen.blit(dial_surf, (x, y))
@@ -83,31 +85,39 @@ class Dial(Tile):
 	
 
 	@classmethod
-	def create_dial(cls, number: int):
+	def create_dial(cls, number: int, color: str):
 		coordinates = number // 5, number % 5
-		return cls(number, coordinates)
-
-
+		return cls(number, coordinates, color)
+	
+	
+	def _on_Dial_pressed(self):
+		
+		for dial in list(d.keys()):
+			cur = d[dial]
+			d[dial] = Dial.create_dial(cur.number, ["green", "coral2"][cur is self])
+			
+	
+	
 class Button:
 	def __init__(self, coordinates: tuple, size: tuple, onscreen_text: str):
 		self._global_coordinates = pg.rect.Rect(coordinates, size)
 		self.color = "green"
 		self.function = but_func.get(onscreen_text)
-		self.font_scale = 0.7
 		
 		self.button_surf = pg.surface.Surface(size, 0, screen)
 		pg.draw.rect(self.button_surf, self.color, self._global_coordinates)
 		screen.blit(self.button_surf, coordinates)
 		
-		self.button_font = pg.font.Font(default_font, round(size[1] * self.font_scale))
-		self.button_font_height = self.button_font.metrics(onscreen_text[0])[0][-2]
-		self.fw = sum(c[-1] for c in self.button_font.metrics(onscreen_text))
+		self.button_font_height = buttons_font.metrics(onscreen_text[0])[0][-2]
+		self.fw = sum(c[-1] for c in buttons_font.metrics(onscreen_text))
 		self.x, self.y = coordinates
 		self.w, self.h = size
 		self.fx = self.x + self.w // 2 - self.fw // 2
 		self.fy = self.y + self.h // 2 - self.button_font_height // 1.5
-		self.font_str = self.button_font.render(onscreen_text, 0, "white")
+		self.font_str = buttons_font.render(onscreen_text, 0, "white")
 		screen.blit(self.font_str, (self.fx, self.fy))
+		
+		buttons_step.value += STEP
 	
 	@staticmethod
 	def _on_Button_pressed():
@@ -120,7 +130,7 @@ class Button:
 class Global:
 	def __init__(self, value):
 		self._value = value
-		
+	
 	@property
 	def value(self):
 		return self._value
@@ -130,3 +140,5 @@ class Global:
 		self._value = new_value
 
 number_is_default = Global(True)
+buttons_step = Global(0)
+empty_board = Global(Solving_sudoku().empty_sudoku)
