@@ -1,25 +1,16 @@
 from Validate_Sudoku import *
 
 class Solving_sudoku:
-    # empty_sudoku = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    empty_sudoku = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-    empty_sudoku = [[0, 8, 0, 0, 0, 0, 1, 0, 0],
-                    [0, 0, 0, 2, 0, 0, 0, 0, 8],
-                    [0, 0, 0, 0, 3, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0, 1],
-                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0, 2],
-                    [0, 0, 0, 0, 0, 0, 0, 0, 6],
-                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    [0, 0, 6, 0, 0, 0, 0, 0, 3]]
 
     def __init__(self, *cord_num):
         self.cord_num = cord_num
@@ -76,9 +67,9 @@ class Solving_sudoku:
                 if number != 0:
                     possible_numbers.add(number)
         return full_set_numbers - possible_numbers
-# ------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 
-# -------------------------------- COUNT AVAILABLE NUMBER ----------------------------------------------
+# ------------------------------------------------- COUNT AVAILABLE NUMBER ----------------------------------------------
 
     def count_ava_num_in_row(self, index_row: int) -> dict:
         ''' function to count the available numbers in a row '''
@@ -154,9 +145,9 @@ class Solving_sudoku:
                 for number in ava_num_in_point:
                     count_number_in_column[number] += 1
         return count_number_in_column
-# ----------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 
-# -------------------------------- FINDING DOUBLE PAIRS ----------------------------------------------
+# ---------------------------------------- FINDING DOUBLE PAIRS ---------------------------------------------------------
 
     def finding_double_pairs_in_squares(self, row_index: int, column_index: int) -> set:
         ''' function for finding duplicate pairs in a square '''
@@ -215,7 +206,7 @@ class Solving_sudoku:
         return set()
 # -----------------------------------------------------------------------------------------------------------------------
 
-#  ------------------------------- FINDING NUMBERS MEET TWICE AT TWO POINT ----------------------------------------------
+# ------------------------------- FINDING NUMBERS MEET TWICE AT TWO POINT -----------------------------------------------
 
     def finding_numbers_meet_twice_at_two_points_in_squares(self, row_index: int, column_index: int):
         ''' the function finds numbers that occur twice in two points in a square '''
@@ -320,7 +311,7 @@ class Solving_sudoku:
             return set()
 # ----------------------------------------------------------------------------------------------------------------------
 
-#  ------------------------------- FINDING NUMBER MEET TWICE GIVEN SQUARES ----------------------------------------------
+# ------------------------------- FINDING NUMBER MEET TWICE GIVEN SQUARES ----------------------------------------------
 
     def finding_coordinates_numbers_meet_twice_in_line_for_square(self, row_index: int, colum_index: int):
         ''' the function finds a number that appears twice in one line in a given square '''
