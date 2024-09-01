@@ -517,8 +517,8 @@ class Solving_sudoku:
             start_row , end_row = 0 , 3
             # start_row, end_row = 6,9
             for step_level_1 in range(3):
-                # start_column , end_column = 0 , 3
-                start_column, end_column = 6,9
+                start_column , end_column = 0 , 3
+                # start_column, end_column = 6,9
                 for step_level_2 in range(3):
                     Count_squares = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
                     numbers_meet_twice_in_row_and_column_for_squares = self.finding_numbers_meet_twice_in_row_and_column_for_squares(start_row, start_column)
