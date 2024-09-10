@@ -701,11 +701,11 @@ class Solving_sudoku:
                                         # -----------------------------------------------------------------------------------------
                                         if stop_checking == True:
                                             recheck_numbers_meet_twice_in_row_and_column = self.finding_numbers_meet_twice_in_row_and_column_for_squares(start_row, start_column)
-                                            if len(recheck_numbers_meet_twice_in_row_and_column) > len(numbers_meet_twice_in_row_and_column_for_squares):
+                                            if len(recheck_numbers_meet_twice_in_row_and_column) >= len(numbers_meet_twice_in_row_and_column_for_squares):
                                                 numbers_meet_twice_in_row_and_column_for_squares = recheck_numbers_meet_twice_in_row_and_column
 
                                             recheck_three_numbers_in_line = self.finding_three_numbers_in_line_on_squares(start_row, start_column)
-                                            if len(recheck_three_numbers_in_line) > len(three_numbers_in_line_on_squares):
+                                            if len(recheck_three_numbers_in_line) >= len(three_numbers_in_line_on_squares):
                                                 three_numbers_in_line_on_squares = recheck_three_numbers_in_line
 
 
