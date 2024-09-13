@@ -232,13 +232,13 @@ class Solving_sudoku:
                         if Count_squares[number] == 2:
                             number_meet_twice.append(number)
 
-                    if len(number_meet_twice) == 2 and set(number_meet_twice) != double_pairs_squares:
+                    if len(number_meet_twice) > 1 and set(number_meet_twice) != double_pairs_squares:
                         double_pairs.append(set(number_meet_twice))
-                    elif len(number_meet_twice) == 3 and len(double_pairs) != 0:
-                        if number_meet_twice[0] in double_pairs[0] and number_meet_twice[1] in double_pairs[0]:
-                            double_pairs.append({number_meet_twice[0], number_meet_twice[1]})
-                        elif number_meet_twice[1] in double_pairs and number_meet_twice[2] in double_pairs[0]:
-                            double_pairs.append({number_meet_twice[0], number_meet_twice[1]})
+                    elif len(number_meet_twice) == 1:
+                        Count_squares[number_meet_twice[0]] += 10
+                        if len(double_pairs) != 0:
+                            if number_meet_twice[0] in double_pairs[0]:
+                                double_pairs[0] -= set(number_meet_twice)
         if len(double_pairs) == 2 and double_pairs[0] == double_pairs[1]:
             return double_pairs[0]
         else:
@@ -701,12 +701,13 @@ class Solving_sudoku:
                                                 Count_squares[number] += 1
                                         # -----------------------------------------------------------------------------------------
                                         if stop_checking == True:
+
                                             recheck_numbers_meet_twice_in_row_and_column = self.finding_numbers_meet_twice_in_row_and_column_for_squares(start_row, start_column)
-                                            if len(recheck_numbers_meet_twice_in_row_and_column) > len(numbers_meet_twice_in_row_and_column_for_squares):
+                                            if len(recheck_numbers_meet_twice_in_row_and_column) >= len(numbers_meet_twice_in_row_and_column_for_squares):
                                                 numbers_meet_twice_in_row_and_column_for_squares = recheck_numbers_meet_twice_in_row_and_column
 
                                             recheck_three_numbers_in_line = self.finding_three_numbers_in_line_on_squares(start_row, start_column)
-                                            if len(recheck_three_numbers_in_line) > len(three_numbers_in_line_on_squares):
+                                            if len(recheck_three_numbers_in_line) >= len(three_numbers_in_line_on_squares):
                                                 three_numbers_in_line_on_squares = recheck_three_numbers_in_line
 
 
