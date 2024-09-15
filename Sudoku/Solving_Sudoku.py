@@ -67,9 +67,9 @@ class Solving_sudoku:
                 if number != 0:
                     possible_numbers.add(number)
         return full_set_numbers - possible_numbers
-# -----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
-# ------------------------------------------------- COUNT AVAILABLE NUMBER ----------------------------------------------
+# -------------------------------- COUNT AVAILABLE NUMBER --------------------------------------------------------------
 
     def count_ava_num_in_row(self, index_row: int) -> dict:
         ''' function to count the available numbers in a row '''
@@ -145,9 +145,9 @@ class Solving_sudoku:
                 for number in ava_num_in_point:
                     count_number_in_column[number] += 1
         return count_number_in_column
-# -----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
-# ---------------------------------------- FINDING DOUBLE PAIRS ---------------------------------------------------------
+# -------------------------------- FINDING DOUBLE PAIRS ----------------------------------------------------------------
 
     def finding_double_pairs_in_squares(self, row_index: int, column_index: int) -> set:
         ''' function for finding duplicate pairs in a square '''
@@ -204,9 +204,9 @@ class Solving_sudoku:
             if duplicate_pairs.count(pair) == 2:
                 return set(pair)
         return set()
-# -----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
-# ------------------------------- FINDING NUMBERS MEET TWICE AT TWO POINT -----------------------------------------------
+# ------------------------------- FINDING NUMBERS MEET TWICE AT TWO POINT ----------------------------------------------
 
     def finding_numbers_meet_twice_at_two_points_in_squares(self, row_index: int, column_index: int):
         ''' the function finds numbers that occur twice in two points in a square '''
@@ -251,20 +251,42 @@ class Solving_sudoku:
         for index_row in range(9):
             if self.empty_sudoku[index_row][index_column] == 0:
                 ava_num_in_point: set = self.finding_available_numbers_in_point(index_row, index_column)
+
                 numbers_meet_twice_at_two_points_in_squares: set = self.finding_numbers_meet_twice_at_two_points_in_squares(index_row, index_column)
                 list_number_appented_twice_in_square = list(numbers_meet_twice_at_two_points_in_squares)
                 if list_number_appented_twice_in_square[0] in ava_num_in_point and \
                         list_number_appented_twice_in_square[1] in ava_num_in_point:
                     ava_num_in_point = ava_num_in_point & numbers_meet_twice_at_two_points_in_squares
+
+                double_pairs_in_row = self.finding_double_pairs_in_row(index_row)
+                ls_double_pairs_in_row = list(double_pairs_in_row)
+                if len(ls_double_pairs_in_row) != 0 and len(ava_num_in_point) != 1:
+                    if ls_double_pairs_in_row[0] in ava_num_in_point and ls_double_pairs_in_row[
+                        1] in ava_num_in_point and len(ava_num_in_point) == 2:
+                        ava_num_in_point = ava_num_in_point & double_pairs_in_row
+                    elif ls_double_pairs_in_row[0] in ava_num_in_point or ls_double_pairs_in_row[1] in ava_num_in_point:
+                        ava_num_in_point = ava_num_in_point - double_pairs_in_row
+
                 for number in ava_num_in_point:
                     ava_colum_num[number] += 1
+
         double_pairs = []
         for index_row in range(9):
             if self.empty_sudoku[index_row][index_column] == 0:
                 number_meet_twice = []
                 ava_num_in_point = self.finding_available_numbers_in_point(index_row, index_column)
+
                 double_bets_in_column = self.finding_double_pairs_in_column(index_column)
                 ava_num = ava_num_in_point - double_bets_in_column
+
+                double = self.finding_double_pairs_in_row(index_row)
+                ls_double_pairs = list(double)
+                if len(ls_double_pairs) != 0 and len(ava_num) != 1:
+                    if ls_double_pairs[0] in ava_num and ls_double_pairs[1] in ava_num and len(ava_num) == 2:
+                        ava_num = ava_num & double
+                    elif ls_double_pairs[0] in ava_num or ls_double_pairs[1] in ava_num:
+                        ava_num = ava_num - double
+
                 for num in ava_num:
                     if ava_colum_num[num] == 2:
                         number_meet_twice.append(num)
@@ -286,9 +308,21 @@ class Solving_sudoku:
         for index_column in range(9):
             if self.empty_sudoku[index_row][index_column] == 0:
                 ava_num_in_point: set = self.finding_available_numbers_in_point(index_row, index_column)
+
                 numbers_meet_twice_at_two_points_in_squares: set = self.finding_numbers_meet_twice_at_two_points_in_squares(index_row, index_column)
-                if list(numbers_meet_twice_at_two_points_in_squares)[0] in ava_num_in_point:
+                list_number_appented_twice_in_square = list(numbers_meet_twice_at_two_points_in_squares)
+                if list_number_appented_twice_in_square[0] in ava_num_in_point and \
+                        list_number_appented_twice_in_square[1] in ava_num_in_point:
                     ava_num_in_point = ava_num_in_point & numbers_meet_twice_at_two_points_in_squares
+
+                double_pairs_in_column = self.finding_double_pairs_in_column(index_column)
+                ls_double_pairs_in_column = list(double_pairs_in_column)
+                if len(ls_double_pairs_in_column) != 0 and len(ava_num_in_point) != 1:
+                    if ls_double_pairs_in_column[0] in ava_num_in_point and ls_double_pairs_in_column[1] in ava_num_in_point and len(ava_num_in_point) == 2:
+                        ava_num_in_point = ava_num_in_point & double_pairs_in_column
+                    elif ls_double_pairs_in_column[0] in ava_num_in_point or ls_double_pairs_in_column[1] in ava_num_in_point:
+                        ava_num_in_point = ava_num_in_point - double_pairs_in_column
+
                 for number in ava_num_in_point:
                     ava_row_num[number] += 1
         double_pairs = []
@@ -296,16 +330,27 @@ class Solving_sudoku:
             if self.empty_sudoku[index_row][index_column] == 0:
                 number_meet_twice = []
                 ava_num = self.finding_available_numbers_in_point(index_row, index_column)
+
                 double_bets_in_row = self.finding_double_pairs_in_row(index_row)
                 ava_num = ava_num - double_bets_in_row
+
+                double = self.finding_double_pairs_in_column(index_column)
+                ls_double_pairs = list(double)
+                if len(ls_double_pairs) != 0 and len(ava_num) != 1:
+                    if ls_double_pairs[0] in ava_num and ls_double_pairs[1] in ava_num and len(ava_num) == 2:
+                        ava_num = ava_num & double
+                    elif ls_double_pairs[0] in ava_num or ls_double_pairs[1] in ava_num:
+                        ava_num = ava_num - double
+
                 for num in ava_num:
                     if ava_row_num[num] == 2:
                         number_meet_twice.append(num)
-                if len(number_meet_twice) == 2 and set(number_meet_twice) != double_bets_in_row:
+                if len(number_meet_twice) >= 2 and set(number_meet_twice) != double_bets_in_row:
                     double_pairs.append(set(number_meet_twice))
                 elif len(number_meet_twice) == 1:
                     ava_row_num[number_meet_twice[0]] += 10
-        if len(double_pairs) == 2 and double_pairs[0] == double_pairs[1]:
+        if len(double_pairs) == 2 and list(double_pairs[0])[0] in double_pairs[1] and list(double_pairs[0])[1] in double_pairs[1]:
+            double_pairs[0] = double_pairs[0] & double_pairs[1]
             return double_pairs[0]
         else:
             return set()
@@ -385,10 +430,9 @@ class Solving_sudoku:
                             else:
                                 number_and_cord[number] += [[index_row, index_column]]
         return number_and_cord
-# ---------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
-# -------------------------------- FINDING NUMBER MEET TWICE ----------------------------------------------
-
+# ------------------------------- FINDING NUMBER MEET TWICE ------------------------------------------------------------
     def finding_numbers_meet_twice_in_row_and_column_for_squares(self, row_index: int, column_index: int):
         ''' the function finds numbers that appear twice in a row and column for a given square '''
         definition = self.square_definition_interface(row_index, column_index)
@@ -459,10 +503,9 @@ class Solving_sudoku:
                         else:
                             coordinates_number[num] += [[index_row, index_column]]
         return coordinates_number
-# ----------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
-# -------------------------------- FINDING THREE NUMBER ----------------------------------------------
-
+# ------------------------------- FINDING THREE NUMBER -----------------------------------------------------------------
     def finding_three_numbers_in_line_on_squares(self, row_index: int, column_index: int):
         definition = self.square_definition_interface(row_index, column_index)
         coordinates_number = []
@@ -506,7 +549,7 @@ class Solving_sudoku:
                             return three_numbers_in_line_on_squares[1]
                     break
         return set()
-# ----------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
 
     def sudoku_solution(self) -> list:
@@ -518,7 +561,7 @@ class Solving_sudoku:
             # start_row, end_row = 6,9
             for step_level_1 in range(3):
                 start_column , end_column = 0 , 3
-                # start_column, end_column = 6,9
+                # start_column, end_column = 3,6
                 for step_level_2 in range(3):
                     Count_squares = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
                     numbers_meet_twice_in_row_and_column_for_squares = self.finding_numbers_meet_twice_in_row_and_column_for_squares(start_row, start_column)
@@ -697,11 +740,10 @@ class Solving_sudoku:
                                         # -----------------------------------------------------------------------------------------
                                         if stop_checking == False:
                                             # ************ SQUARES STEK ***************
-                                            for number in ava_num_in_point:
-                                                Count_squares[number] += 1
-                                        # -----------------------------------------------------------------------------------------
+                                            for num in ava_num_in_point:
+                                                Count_squares[num] += 1
+                                        #------------------------------------------------------------------------------------------
                                         if stop_checking == True:
-
                                             recheck_numbers_meet_twice_in_row_and_column = self.finding_numbers_meet_twice_in_row_and_column_for_squares(start_row, start_column)
                                             if len(recheck_numbers_meet_twice_in_row_and_column) >= len(numbers_meet_twice_in_row_and_column_for_squares):
                                                 numbers_meet_twice_in_row_and_column_for_squares = recheck_numbers_meet_twice_in_row_and_column
@@ -737,7 +779,9 @@ class Solving_sudoku:
 
 
 if __name__ == '__main__':
-    S = Solving_sudoku([ 0 , 0 , 3 ], [0,7,2],[1,4,1],[1,5,7],[2,3,8],[2,5,9],[3,0,6],[3,4,2],[4,6,9],[4,8,5],[5,6,7],[6,1,7],[6,2,4],[6,6,8],[7,3,6],[7,7,1],[8,1,9])
+    # S = Solving_sudoku([ 0 , 0 , 3 ], [0,7,2],[1,4,1],[1,5,7],[2,3,8],[2,5,9],[3,0,6],[3,4,2],[4,6,9],[4,8,5],[5,6,7],[6,1,7],[6,2,4],[6,6,8],[7,3,6],[7,7,1],[8,1,9])
+    # S = Solving_sudoku([ 0 , 2 , 8 ], [0,4,3],[0,5,4],[0,7,6],[1,0,1],[1,4,8],[2,0,7],[2,4,1],[3,2,3],[4,1,2],[4,3,5],[4,6,9],[4,7,1],[5,0,9],[5,8,7],[6,2,6],[6,5,3],[6,6,8],[6,8,1],[7,0,3],[7,7,2],[8,3,9],[8,7,4])
+    S = Solving_sudoku([0,0,4], [0,4,5],[0,6,8],[1,1,1],[1,2,8],[1,6,7],[2,2,3],[2,5,4],[3,0,9],[3,1,6],[4,2,5],[4,5,3],[5,1,7],[5,5,8],[5,7,6],[6,2,1],[6,3,6],[6,8,4],[7,3,5],[7,7,1],[7,8,3],[8,3,8])
     print(*S.completing_sudoku(), sep='\n')
     print('---------------------------')
     print(*S.sudoku_solution(), sep='\n')
