@@ -32,15 +32,15 @@ class Solving_sudoku:
     #                 [0, 4, 0, 8, 0, 0, 0, 0, 0],
     #                 [8, 0, 0, 0, 0, 0, 3, 0, 0]]
 
-    # empty_sudoku = [[0, 0, 0, 0, 0, 9, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 8, 4],
-    #                 [0, 0, 0, 0, 3, 0, 0, 0, 0],
-    #                 [5, 0, 3, 0, 0, 4, 0, 0, 6],
-    #                 [0, 0, 0, 0, 0, 0, 0, 3, 2],
-    #                 [0, 0, 0, 0, 9, 6, 0, 0, 0],
-    #                 [6, 9, 0, 0, 0, 0, 3, 0, 8],
-    #                 [8, 1, 0, 0, 6, 0, 0, 0, 9],
-    #                 [0, 3, 4, 9, 0, 0, 5, 0, 0]]
+    # empty_sudoku = [[0, 0, 0, 0, 2, 0, 5, 0, 0],
+    #                 [0, 1, 3, 0, 9, 5, 0, 0, 7],
+    #                 [0, 5, 0, 0, 1, 8, 6, 4, 0],
+    #                 [0, 0, 0, 0, 7, 0, 0, 9, 6],
+    #                 [0, 0, 0, 0, 0, 3, 0, 1, 0],
+    #                 [0, 0, 6, 0, 0, 0, 7, 0, 3],
+    #                 [0, 0, 0, 0, 0, 0, 9, 6, 0],
+    #                 [0, 0, 0, 0, 0, 0, 3, 0, 4],
+    #                 [0, 0, 0, 0, 0, 0, 1, 0, 0]]
 
     def __init__(self, *cord_num):
         self.cord_num = cord_num
@@ -623,12 +623,13 @@ class Solving_sudoku:
         while count_zero > 0:
             number_done = 0
             start_row , end_row = 0 , 3
-            # start_row, end_row = 6,9
+            # start_row, end_row = 3,6
             for step_level_1 in range(3):
                 start_column , end_column = 0 , 3
                 # start_column, end_column = 3,6
                 for step_level_2 in range(3):
                     Count_squares = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
+                    coords_point = dict()
                     numbers_meet_twice_in_row_and_column_for_squares = self.finding_numbers_meet_twice_in_row_and_column_for_squares(start_row, start_column)
                     three_numbers_in_line_on_squares = self.finding_three_numbers_in_line_on_squares(start_row, start_column)
                     for step_level_3 in range(2):
@@ -819,6 +820,7 @@ class Solving_sudoku:
                                         # -----------------------------------------------------------------------------------------
                                         if stop_checking == False:
                                             # ************ SQUARES STEK ***************
+                                            coords_point[(index_row, index_column)] = ava_num_in_point
                                             for num in ava_num_in_point:
                                                 Count_squares[num] += 1
                                         # -----------------------------------------------------------------------------------------
@@ -840,6 +842,16 @@ class Solving_sudoku:
 
 
                                     elif step_level_3 == 1:
+                                        if (index_row, index_column) in coords_point:
+                                            ava_num_in_point = ava_num_in_point & coords_point[(index_row, index_column)]
+                                            # if len(ava_num_in_point) == 1:
+                                            #     self.empty_sudoku[index_row][index_column] = number
+                                            #     count_zero -= 1
+                                            #     number_done += 1
+                                            #     # print(*self.empty_sudoku, sep='\n')
+                                            #     # print(f'row - {index_row}')
+                                            #     # print(f'column - {index_column}')
+                                            #     # print(f'Count_squares==1 - {number}')
                                         for number in ava_num_in_point:
                                             if len(ava_num_in_point) == 2 and \
                                                     Count_squares[list(ava_num_in_point)[0]] == 1 and \
@@ -867,7 +879,7 @@ class Solving_sudoku:
 if __name__ == '__main__':
     # S = Solving_sudoku([ 0 , 0 , 3 ], [0,7,2],[1,4,1],[1,5,7],[2,3,8],[2,5,9],[3,0,6],[3,4,2],[4,6,9],[4,8,5],[5,6,7],[6,1,7],[6,2,4],[6,6,8],[7,3,6],[7,7,1],[8,1,9])
     # S = Solving_sudoku([ 0 , 2 , 8 ], [0,4,3],[0,5,4],[0,7,6],[1,0,1],[1,4,8],[2,0,7],[2,4,1],[3,2,3],[4,1,2],[4,3,5],[4,6,9],[4,7,1],[5,0,9],[5,8,7],[6,2,6],[6,5,3],[6,6,8],[6,8,1],[7,0,3],[7,7,2],[8,3,9],[8,7,4])
-    S = Solving_sudoku([1,0,3], [1, 1, 5], [1, 2, 1], [1, 3, 6], [1, 6, 9], [0, 8, 3], [2, 0, 4], [2, 2, 9], [2, 8, 7], [3, 1, 7], [3, 6, 1], [3, 7, 9], [4, 0, 9], [4, 1, 4], [4, 2, 6], [4, 4, 5], [4, 6, 8], [5, 0, 1], [5, 3, 3], [5, 8, 5], [6, 3, 4], [6, 4, 1], [6, 5, 5], [7, 2, 5], [7, 5, 3], [8, 5, 8], [8, 7, 6], [8, 8, 1])
+    S = Solving_sudoku([0,0,9],[0,3,7],[0,5,6],[0,7,3],[0,8,1],[1,0,6],[1,3,4],[1,6,8],[1,7,2],[2,0,2],[2,2,7],[2,3,3],[2,8,9],[3,2,2],[3,5,1],[3,6,4],[4,0,7],[4,4,6],[4,6,2],[5,0,1],[5,1,9],[7,1,6],[7,4,8],[7,5,9],[7,7,7],[8,0,4],[8,2,9],[8,3,6])
     print(*S.completing_sudoku(), sep='\n')
     print('---------------------------')
     print(*S.sudoku_solution(), sep='\n')
