@@ -735,7 +735,7 @@ class Solving_sudoku:
                                         if (index_row, index_column) in coords_point:
                                             ava_num_in_point = ava_num_in_point & coords_point[(index_row, index_column)]
                                             if len(ava_num_in_point) == 1:
-                                                self.empty_sudoku[index_row][index_column] = number
+                                                self.empty_sudoku[index_row][index_column] = list(ava_num_in_point)[0]
                                                 count_zero -= 1
                                                 number_done += 1
                                                 # print(*self.empty_sudoku, sep='\n')
