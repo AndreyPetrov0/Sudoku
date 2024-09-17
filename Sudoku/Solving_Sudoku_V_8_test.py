@@ -12,35 +12,6 @@ class Solving_sudoku:
                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-    # empty_sudoku = [[0, 8, 0, 0, 0, 0, 1, 0, 0],
-    #                 [0, 0, 0, 2, 0, 0, 0, 0, 8],
-    #                 [0, 0, 0, 0, 3, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 1],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 2],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 6],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 6, 0, 0, 0, 0, 0, 3]]
-
-    # empty_sudoku = [[0, 0, 0, 7, 0, 0, 1, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 0, 0, 0, 0, 0, 8],
-    #                 [0, 0, 0, 1, 9, 7, 0, 0, 0],
-    #                 [0, 0, 7, 0, 0, 8, 0, 0, 3],
-    #                 [0, 0, 0, 3, 0, 0, 0, 0, 0],
-    #                 [0, 0, 0, 4, 0, 0, 0, 0, 0],
-    #                 [0, 4, 0, 8, 0, 0, 0, 0, 0],
-    #                 [8, 0, 0, 0, 0, 0, 3, 0, 0]]
-
-    # empty_sudoku = [[0, 0, 0, 0, 2, 0, 5, 0, 0],
-    #                 [0, 1, 3, 0, 9, 5, 0, 0, 7],
-    #                 [0, 5, 0, 0, 1, 8, 6, 4, 0],
-    #                 [0, 0, 0, 0, 7, 0, 0, 9, 6],
-    #                 [0, 0, 0, 0, 0, 3, 0, 1, 0],
-    #                 [0, 0, 6, 0, 0, 0, 7, 0, 3],
-    #                 [0, 0, 0, 0, 0, 0, 9, 6, 0],
-    #                 [0, 0, 0, 0, 0, 0, 3, 0, 4],
-    #                 [0, 0, 0, 0, 0, 0, 1, 0, 0]]
 
     def __init__(self, *cord_num):
         self.cord_num = cord_num
@@ -590,30 +561,6 @@ class Solving_sudoku:
                             return three_numbers_in_line_on_squares[1]
                     break
         return set()
-
-    # ----------------- TEST -------------------------------
-    # def finding_theree_num(self, index_row: int, index_column: int, number_fin):
-    #     cont = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
-    #     for row in range(9):
-    #         if self.empty_sudoku[row][index_column] == 0:
-    #             ava_1: set = self.finding_available_numbers_in_point(row, index_column)
-    #             x = self.func_invalid(row, index_column, ava_1)
-    #             if number_fin in ava_1:
-    #                 for i in ava_1:
-    #                     cont[i] += 1
-    #
-    #     for column in range(9):
-    #         if self.empty_sudoku[index_row][column] == 0:
-    #             ava_2: set = self.finding_available_numbers_in_point(index_row, column)
-    #             e = self.func_invalid(index_row, column, ava_2)
-    #             if number_fin in ava_2:
-    #                 for i in ava_2:
-    #                     cont[i] += 1
-    #
-    #     ava_3: set = self.finding_available_numbers_in_point(index_row, index_column)
-    #     for k, r in cont.items():
-    #         if r == 1 and r in ava_3:
-    #             return k
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -643,23 +590,21 @@ class Solving_sudoku:
                                     double_pairs_in_row: set = self.finding_double_pairs_in_row(index_row)
                                     double_pairs_in_column: set = self.finding_double_pairs_in_column(index_column)
                                     double_pairs_in_squares: set = self.finding_double_pairs_in_squares(index_row, index_column)
+                                    numbers_meet_twice_at_two_points_in_row: set = self.finding_numbers_meet_twice_at_two_points_in_row(index_row)
+                                    numbers_meet_twice_at_two_points_in_column: set = self.finding_numbers_meet_twice_at_two_points_in_column(index_column)
                                     numbers_meet_twice_at_two_points_in_squares: set = self.finding_numbers_meet_twice_at_two_points_in_squares(index_row, index_column)
                                     coordinates_numbers_meet_twice_given_squares_in_row: dict = self.finding_coordinates_numbers_meet_twice_given_squares_in_row(index_row)
                                     coordinates_numbers_meet_twice_given_squares_in_column: dict = self.finding_coordinates_numbers_meet_twice_given_squares_in_column(index_column)
 
-                                    # ----- TEST ___-------
-                                    numbers_meet_twice_at_two_points_in_row: set = self.finding_numbers_meet_twice_at_two_points_in_row(index_row)
                                     ls_nm_row = list(numbers_meet_twice_at_two_points_in_row)
                                     if len(ls_nm_row) != 0:
                                         if ls_nm_row[0] in ava_num_in_point and ls_nm_row[1] in ava_num_in_point:
                                             ava_num_in_point = ava_num_in_point & numbers_meet_twice_at_two_points_in_row
 
-                                    numbers_meet_twice_at_two_points_in_column: set = self.finding_numbers_meet_twice_at_two_points_in_column(index_column)
                                     ls_nm_co = list(numbers_meet_twice_at_two_points_in_column)
                                     if len(ls_nm_co) != 0:
                                         if ls_nm_co[0] in ava_num_in_point and ls_nm_co[1] in ava_num_in_point:
                                             ava_num_in_point = ava_num_in_point & numbers_meet_twice_at_two_points_in_column
-                                    # -----------------------
 
                                     if len(three_numbers_in_line_on_squares) == 0:
                                         three_numbers_in_row_on_squares = self.finding_three_numbers_in_row_on_squares(index_row)
@@ -733,31 +678,7 @@ class Solving_sudoku:
                                         if stop_checking == False:
                                             # ************ ROW STEK ***************
                                             count_row_num: dict = self.count_ava_num_in_row(index_row)
-                                            # point_in_row: set = self.finding_available_numbers_in_point(index_row, index_column)
-                                            # # ***************************
-                                            #
-                                            # if tuple(numbers_meet_twice_at_two_points_in_squares)[0] in point_in_row:
-                                            #     point_in_row = point_in_row & numbers_meet_twice_at_two_points_in_squares
-                                            #
-                                            # numbers_meet_twice_at_two_points_in_row: set = self.finding_numbers_meet_twice_at_two_points_in_row(index_row)
-                                            # ls_nm_row = list(numbers_meet_twice_at_two_points_in_row)
-                                            # if len(ls_nm_row) != 0:
-                                            #     if ls_nm_row[0] in point_in_row and ls_nm_row[1] in point_in_row:
-                                            #         point_in_row = point_in_row & numbers_meet_twice_at_two_points_in_row
-                                            #
-                                            # if len(coordinates_numbers_meet_twice_given_squares_in_column) != 0:
-                                            #     for n_c in point_in_row:
-                                            #         if n_c in coordinates_numbers_meet_twice_given_squares_in_column:
-                                            #             if [index_row, index_column] != coordinates_numbers_meet_twice_given_squares_in_column[n_c][0] and \
-                                            #                     [index_row, index_column] != coordinates_numbers_meet_twice_given_squares_in_column[n_c][1]:
-                                            #                 point_in_row = point_in_row - {n_c}
-                                            #
-                                            # if len(numbers_meet_twice_in_row_and_column_for_squares) != 0:
-                                            #     for number in point_in_row:
-                                            #         if number in numbers_meet_twice_in_row_and_column_for_squares:
-                                            #             if [index_row, index_column] != numbers_meet_twice_in_row_and_column_for_squares[number][0] and \
-                                            #                     [index_row, index_column] != numbers_meet_twice_in_row_and_column_for_squares[number][1]:
-                                            #                 point_in_row = point_in_row - {number}
+                                            # ***************************
 
                                             if len(double_pairs_in_row) == 2:
                                                 count_row_num.pop(list(double_pairs_in_row)[0])
@@ -777,31 +698,7 @@ class Solving_sudoku:
                                         if stop_checking == False:
                                             # ************* COLUMN STEK **************
                                             count_column_num: dict = self.count_ava_num_in_column(index_column)
-                                            # point_in_col: set = self.finding_available_numbers_in_point(index_row, index_column)
-                                            # # ***************************
-                                            #
-                                            # if tuple(numbers_meet_twice_at_two_points_in_squares)[0] in point_in_col:
-                                            #     point_in_col = point_in_col & numbers_meet_twice_at_two_points_in_squares
-                                            #
-                                            # numbers_meet_twice_at_two_points_in_column: set = self.finding_numbers_meet_twice_at_two_points_in_column(index_column)
-                                            # ls_nm_co = list(numbers_meet_twice_at_two_points_in_column)
-                                            # if len(ls_nm_co) != 0:
-                                            #     if ls_nm_co[0] in point_in_col and ls_nm_co[1] in point_in_col:
-                                            #         point_in_col = point_in_col & numbers_meet_twice_at_two_points_in_column
-                                            #
-                                            # if len(coordinates_numbers_meet_twice_given_squares_in_row) != 0:
-                                            #     for a_r in point_in_col:
-                                            #         if a_r in coordinates_numbers_meet_twice_given_squares_in_row:
-                                            #             if [index_row, index_column] != coordinates_numbers_meet_twice_given_squares_in_row[a_r][0] and \
-                                            #                     [index_row, index_column] != coordinates_numbers_meet_twice_given_squares_in_row[a_r][1]:
-                                            #                 point_in_col = point_in_col - {a_r}
-                                            #
-                                            # if len(numbers_meet_twice_in_row_and_column_for_squares) != 0:
-                                            #     for number in point_in_col:
-                                            #         if number in numbers_meet_twice_in_row_and_column_for_squares:
-                                            #             if [index_row, index_column] != numbers_meet_twice_in_row_and_column_for_squares[number][0] and \
-                                            #                     [index_row, index_column] != numbers_meet_twice_in_row_and_column_for_squares[number][1]:
-                                            #                 point_in_col = point_in_col - {number}
+                                            # ***************************
 
                                             if len(double_pairs_in_column) == 2:
                                                 count_column_num.pop(list(double_pairs_in_column)[0])
@@ -823,14 +720,7 @@ class Solving_sudoku:
                                             coords_point[(index_row, index_column)] = ava_num_in_point
                                             for num in ava_num_in_point:
                                                 Count_squares[num] += 1
-                                        # -----------------------------------------------------------------------------------------
-                                        # if stop_checking == False:
-                                        #     for number_column, count_num_column in count_column_num.items():
-                                        #         if count_num_column == 2:
-                                        #             if number_column in count_row_num:
-                                        #                 if count_row_num[number_column] == 2:
-                                        #                     g = self.finding_theree_num(index_row, index_column,number_column)
-                                        #------------------------------------------------------------------------------------------
+
                                         if stop_checking == True:
                                             recheck_numbers_meet_twice_in_row_and_column = self.finding_numbers_meet_twice_in_row_and_column_for_squares(start_row, start_column)
                                             if len(recheck_numbers_meet_twice_in_row_and_column) >= len(numbers_meet_twice_in_row_and_column_for_squares):
@@ -844,14 +734,14 @@ class Solving_sudoku:
                                     elif step_level_3 == 1:
                                         if (index_row, index_column) in coords_point:
                                             ava_num_in_point = ava_num_in_point & coords_point[(index_row, index_column)]
-                                            # if len(ava_num_in_point) == 1:
-                                            #     self.empty_sudoku[index_row][index_column] = number
-                                            #     count_zero -= 1
-                                            #     number_done += 1
-                                            #     # print(*self.empty_sudoku, sep='\n')
-                                            #     # print(f'row - {index_row}')
-                                            #     # print(f'column - {index_column}')
-                                            #     # print(f'Count_squares==1 - {number}')
+                                            if len(ava_num_in_point) == 1:
+                                                self.empty_sudoku[index_row][index_column] = number
+                                                count_zero -= 1
+                                                number_done += 1
+                                                # print(*self.empty_sudoku, sep='\n')
+                                                # print(f'row - {index_row}')
+                                                # print(f'column - {index_column}')
+                                                # print(f'Count_squares==1 - {number}')
                                         for number in ava_num_in_point:
                                             if len(ava_num_in_point) == 2 and \
                                                     Count_squares[list(ava_num_in_point)[0]] == 1 and \
